@@ -8,10 +8,11 @@
 %}
 %%
 
-":" { return yytext[0]; }
-[a-zA-Z.]+ { return WORD; }
-^"\t".+ { return COMMAND; }
-[\n.] {}
+":" { cppPrint(yytext); return yytext[0]; }
+[a-zA-Z._-]+ { cppPrint("WORD"); return WORD; }
+[ \t\n]*"#".+ { cppPrint("COMMENT"); }
+^"\t".+ { cppPrint("COMMAND"); return COMMAND; }
+. {}
 
 
 %%

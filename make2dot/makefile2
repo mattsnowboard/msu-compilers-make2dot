@@ -1,0 +1,11 @@
+my.file.1 : dep_1 dep_2
+	gcc dep_1
+
+dep_2   : other
+	ls other
+	gcc other
+
+# ignore this comment!
+	# and this one
+  # and this one too
+
