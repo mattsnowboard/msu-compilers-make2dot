@@ -2,9 +2,14 @@
 #ifndef _LIST_H
 #define _LIST_H
 
+#ifdef __cplusplus
+
 #include <string>
 #include <list>
 
+#endif
+
+#ifdef __cplusplus
 /**
  * List
  *
@@ -14,6 +19,8 @@ class List
 {
 public:
 
+    typedef std::list<std::string> ListT;
+
     List()
     {}
 
@@ -22,12 +29,18 @@ public:
         _list.push_back(s);
     }
 
+    const ListT& GetList() const;
+
     virtual ~List() {}
 
 private:
 
     /// List of strings
-    std::list<std::string> _list;
+    ListT _list;
 };
+
+#else
+typedef struct List List;
+#endif
 
 #endif

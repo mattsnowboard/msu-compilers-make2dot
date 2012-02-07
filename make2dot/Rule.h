@@ -2,6 +2,13 @@
 #ifndef _RULE_H
 #define _RULE_H
 
+#ifdef __cplusplus
+#include <string>
+#endif
+
+#include "List.h"
+
+#ifdef __cplusplus
 /**
  * Stores a make rule (targets, sources, commands)
  */
@@ -9,33 +16,39 @@ class Rule
 {
 public:
 
-    Rule()
+    Rule() : _targets(NULL), _sources(NULL), _commands(NULL)
     {}
 
-    void SetTarget(const std::shared_ptr<Files> &t)
+    void SetTarget(const List &t)
     {
-        _targets.reset(t.get());
+        _targets = &t;
     }
 
-    void SetSources(const std::shared_ptr<Files> &s)
+    void SetSources(const List &s)
     {
-        _sources.reset(s.get());
+        _sources = &s;
     }
 
-    void SetCommands(const std::shared_ptr<List> &c)
+    void SetCommands(const List &c)
     {
-        _commands.reset(c.get());
+        _commands = &c;
     }
+
+    std::string GetStrings();
 
     ~Rule()
     {}
 
 private:
 
-    std::shared_ptr<Files> _targets;
-    std::shared_ptr<Files> _sources;
-    std::shared_ptr<List> _commands;
+    const List* _targets;
+    const List* _sources;
+    const List* _commands;
     
 };
+
+#else
+typedef struct Rule Rule;
+#endif
 
 #endif

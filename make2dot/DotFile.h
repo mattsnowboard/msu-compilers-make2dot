@@ -4,10 +4,10 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 
-#include "List.h"
-#include "Files.h"
-#include "Rule.h"
+class Rule;
+class List;
 
 class DotFile
 {
@@ -17,21 +17,18 @@ public:
      */
     DotFile() {}
 
+    void SetFileName(const std::string &f)
+    {
+        _filename = f;
+    }
+    
     /**
      * Create a List and return the pointer so the callee can add
      * items to it
      *
      * @return *List, owned by DotFile
      */
-    std::shared_ptr<List> CreateList();
-
-    /**
-     * Create a Files List and return the pointer so the callee can add
-     * items to it
-     *
-     * @return *Files, owned by DotFile
-     */
-    std::shared_ptr<Files> CreateFilesList();
+    List& CreateList();
 
     /**
      * Create a Rule and return the pointer so the callee can add
@@ -39,19 +36,30 @@ public:
      *
      * @return *Rule, owned by DotFile
      */
-    std::shared_ptr<Rule> CreateRule();
+    Rule& CreateRule();
+
+    /**
+     * Make the Dot file as a string
+     *
+     * @return string containing the dot file
+     */
+    std::string MakeFile();
 
     ~DotFile() {}
 
 private:
 
-    typedef std::vector<std::shared_ptr<Rule>> RulesVec;
-    typedef std::vector<std::shared_ptr<List>> ListVec;
-    typedef std::vector<std::shared_ptr<Files>> FilesVec;
+    // DotFile OWNS all of this, so it holds smart pointers
+    // which will be deleted when DotFile goes out of scope
+    // Callers get raw pointers since we know DotFile will outlive them
+    typedef std::vector<std::shared_ptr<Rule> > RulesVec;
+    typedef std::vector<std::shared_ptr<List> > ListVec;
     RulesVec _rules;
     // just hold these objects
     ListVec _lists;
-    FilesVec _files;
+
+    /// The filename to output
+    std::string _filename;
 };
 
 #endif

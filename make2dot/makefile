@@ -1,5 +1,5 @@
 
-SRCS := DotFile.cpp
+SRCS := DotFile.cpp Rule.cpp List.cpp
 OBJS := $(SRCS:%.cpp=%.o)
 
 CXXFLAGS = -Wall -std=c++0x
@@ -26,7 +26,7 @@ y.tab.o: y.tab.c y.tab.h
 	gcc -c y.tab.c
 
 make2dot.o: make2dot.cc y.tab.h
-	g++ -c make2dot.cc
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c make2dot.cc
 
 # dependency stuff
 .D_TARGET:
