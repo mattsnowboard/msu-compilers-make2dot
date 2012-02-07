@@ -1,0 +1,6 @@
+# this makefile uses a target with no source and one with no command
+
+target: file1
+
+file1:
+	do something

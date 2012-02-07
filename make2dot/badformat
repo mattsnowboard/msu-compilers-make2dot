@@ -1,0 +1,10 @@
+target1 target2 : source1@@@@@source2
+	command
+
+source1: aaa
+	command2
+
+aaa:
+	gcc
+
+b.c++ : test

@@ -2,4 +2,5 @@
 *.tar.gz
 lex.yy*
 y.tab.*
-
+.deps
+.D_TARGET
