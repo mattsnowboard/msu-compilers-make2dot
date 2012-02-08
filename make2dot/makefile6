@@ -1,0 +1,7 @@
+# test nested variables
+
+INNER = c.h $(NEST)
+OUTER = a.c b.c $(INNER)
+NEST = d.l e.png
+
+my_file: $(OUTER)
