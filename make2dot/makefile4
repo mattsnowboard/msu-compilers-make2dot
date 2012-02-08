@@ -1,0 +1,10 @@
+# this makefile demonstrates the various shapes
+
+all: target.o
+	a
+
+target.o: target.c lib.cpp
+	gcc
+
+lib.cpp: file.y
+	bison

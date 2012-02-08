@@ -4,3 +4,6 @@ target: file1
 
 file1:
 	do something
+
+
+multiple targets no_source:

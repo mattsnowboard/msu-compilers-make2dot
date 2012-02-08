@@ -1,5 +1,7 @@
 
 SRCS := DotFile.cpp Rule.cpp List.cpp
+TESTS := makefile1.png makefile2.png makefile3.png makefile4.png
+DOTS := $(TESTS:%.png=%.dot)
 OBJS := $(SRCS:%.cpp=%.o)
 
 CXXFLAGS = -Wall -std=c++0x
@@ -9,8 +11,14 @@ df = $(DEPDIR)/$(@F)
 
 MAKEDEPEND = $(CXX) $(CPPFLAGS) -MM -o $(df).d $<
 
+all: make2dot $(TESTS)
+
 make2dot : $(OBJS) make2dot.o y.tab.o lex.yy.o
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o make2dot $^
+
+%.png : % make2dot
+	./make2dot $< > $<.dot
+	dot -Tpng $<.dot -o $@
 
 # basics for flex/bison
 lex.yy.c: make2dot.l y.tab.h
@@ -49,5 +57,6 @@ make2dot.o: make2dot.cc y.tab.h
 
 clean: 
 	$(RM) $(OBJS) .D_TARGET make2dot.o make2dot lex.yy.c lex.yy.o \
-		y.tab.h y.tab.c y.tab.o
+		y.tab.h y.tab.c y.tab.o \
+		$(TESTS) $(DOTS)
 	rm -rf $(DEPDIR)

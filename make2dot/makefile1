@@ -3,3 +3,11 @@ file1 file2: file3 file4
 
 file3: source
 	Another command
+source: source_1 source_2
+	gcc
+
+
+
+source_2: something.cc
+	g++
+	ls

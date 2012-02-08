@@ -1,5 +1,7 @@
 *.o
 *.tar.gz
+*.dot
+*.png
 lex.yy*
 y.tab.*
 .deps

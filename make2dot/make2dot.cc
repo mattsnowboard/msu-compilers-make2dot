@@ -41,8 +41,6 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    cout << "Make2Dot!" << endl;
-
     yyin = file;
 
     do
