@@ -5,6 +5,7 @@
 #include "DotFile.h"
 #include "List.h"
 #include "Rule.h"
+#include "Variable.h"
 
 using namespace std;
 
@@ -65,6 +66,7 @@ extern "C" void cppPrint(char *s)
 
 extern "C" Rule* makeRule()
 {
+    // this is safe (not a temp) because dot holds these pointers
     return &dot.CreateRule();
 }
 
@@ -87,6 +89,7 @@ extern "C" List* makeList(char *c)
 {
     List& l = dot.CreateList();
     l.Add(c);
+    // this is safe (not a temp) because dot holds these pointers
     return &l;
 }
 
@@ -94,4 +97,18 @@ extern "C" List* addToList(List *l, char *c)
 {
     l->Add(c);
     return l;
+}
+
+extern "C" Variable* makeVariable(char *name, List *l)
+{
+    Variable &v = dot.CreateVariable();
+    v.SetName(name);
+    v.SetList(*l);
+    // this is safe (not a temp) because dot holds these pointers
+    return &v;
+}
+
+extern "C" void addToVariable(Variable *v, List *l)
+{
+    v->SetList(*l);
 }

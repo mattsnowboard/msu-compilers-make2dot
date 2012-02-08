@@ -5,24 +5,31 @@
 
 #include "y.tab.h"
 
+#include <string.h> // strdup
+
 %}
 %%
 
-":" {
+":"|"=" {
     //cppPrint(yytext);
     return yytext[0];
 }
 [a-zA-Z0-9._-]+ {
     //cppPrint("WORD");
-    yylval.s = yytext;
+    yylval.s = strdup(yytext);
     return WORD;
+}
+"$("[a-zA-Z][a-zA-Z0-9]*")" {
+    //cppPrint("VARIABLE");
+    yylval.s = strdup(yytext);
+    return VARIABLE;
 }
 [ \t]*"#".*"\n" {
     //cppPrint("COMMENT");
 }
 ^"\t".+ {
     //cppPrint("COMMAND");
-    yylval.s = yytext;
+    yylval.s = strdup(yytext);
     return COMMAND;
 }
 ^"\n" {

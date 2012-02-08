@@ -1,0 +1,16 @@
+# this makefile uses variables
+
+VAR1 = source.c header.h
+anotherVar = myfile.l lib.l g.y
+
+source.o: $(VAR1)
+	gcc $< -c
+
+exe: source.o $(anotherVar)
+
+
+stuff blah: $(anotherVar) $(VAR1)
+
+
+
+

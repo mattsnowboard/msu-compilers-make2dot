@@ -1,6 +1,6 @@
 
 SRCS := DotFile.cpp Rule.cpp List.cpp
-TESTS := makefile1.png makefile2.png makefile3.png makefile4.png
+TESTS := makefile1.png makefile2.png makefile3.png makefile4.png makefile5.png
 DOTS := $(TESTS:%.png=%.dot)
 OBJS := $(SRCS:%.cpp=%.o)
 

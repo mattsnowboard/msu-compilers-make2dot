@@ -48,18 +48,18 @@ inline std::string getShape(const std::string &s)
     if (strieq(ext, "c") || strieq(ext, "cc") || strieq(ext, "cpp")
         || strieq(ext, "cxx"))
     {
-        return " [shape=rect];";
+        return "rect";
     }
     if (strieq(ext, "h") || strieq(ext, "hh") || strieq(ext, "hpp")
         || strieq(ext, "hxx"))
     {
-        return " [shape=trapezium];";
+        return "trapezium";
     }
     if (strieq(ext, "l") || strieq(ext, "y"))
     {
-        return " [shape=parallelogram];";
+        return "parallelogram";
     }
-    return " [shape=ellipse];";
+    return "ellipse";
     
 }
 
@@ -114,15 +114,20 @@ std::string Rule::GetStrings()
              src != _sources->GetList().end();
              ++src)
         {
-            s << "\t\"" << *src << "\"" << getShape(*src) << std::endl;
+            // print out the shape of the source
+            s << "\t\"" << *src << "\" [shape=" << getShape(*src)
+              << "];" << std::endl;
             for (List::ListT::const_iterator tar = _targets->GetList().begin();
                  tar != _targets->GetList().end();
                  ++tar)
             {
-                s << "\t\"" << *tar << "\"" << getShape(*tar) << std::endl
+                // print the shape of the target then the connection
+                s << "\t\"" << *tar << "\" [shape=" << getShape(*tar)
+                  << "];" << std::endl
                   << "\t\"" << *src << "\"->\"" << *tar << "\"";
                 if (_commands)
                 {
+                    // add a label with the command used
                     s << " [label=\"" << implode(*_commands) << "\"];";
                 }
                 s << std::endl;
@@ -135,12 +140,14 @@ std::string Rule::GetStrings()
              tar != _targets->GetList().end();
              ++tar)
         {
-            s << "\t\"" << *tar << "\"";
+            // print out the target by itself and its shape
+            s << "\t\"" << *tar << "\" [shape=" << getShape(*tar);
             if (_commands)
             {
-                s << " [label=\"" << implode(*_commands) << "\"];";
+                // add a label with the command used
+                s << " label=\"" << implode(*_commands) << "\"";
             }
-            s << std::endl;
+            s << "];" << std::endl;
         }
     }
 

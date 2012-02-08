@@ -9,6 +9,7 @@
 #include "List.h"
 
 #ifdef __cplusplus
+
 /**
  * Stores a make rule (targets, sources, commands)
  */

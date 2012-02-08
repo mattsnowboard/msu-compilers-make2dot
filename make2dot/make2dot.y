@@ -2,21 +2,25 @@
 /*
  * Make2dot Bison
  */
-#include "Rule.h"
 
 %}
 
 %union {
     char *s;
-    void *r;
-    void *l;
+    void *rule;
+    void *list;
+    void *var;
 }
 
-%token <s> WORD COMMAND
+%token <s> WORD COMMAND VARIABLE
 
-%type <r> SET RULE
+%type <s> PHRASE
 
-%type <l> TARGET LIST COMMANDS
+%type <rule> SET RULE
+
+%type <list> TARGET LIST COMMANDS
+
+%type <var> DECLARATION
 
 %%
 
@@ -32,7 +36,7 @@ SETS: SETS SET {
     // add the Rule object to the collection of Rules
 }
 SET: RULE '\n' COMMANDS {
-    //cppPrint("\tSET -> RULE COMMANDS \\n");
+    //cppPrint("\tSET -> RULE \\n COMMANDS");
     // add COMMANDS to the Rule object in RULE, store in SET
     addCommands($1, $3);
     $$ = $1;
@@ -41,7 +45,16 @@ SET: RULE '\n' {
     //cppPrint("\tSET -> RULE \\n");
     // store Rule object in SET
     $$ = $1;
-    }
+}
+SET: DECLARATION '\n' {
+    //cppPrint("\tSET -> DECLARATION \\n");
+    // store the declaration in the var name
+}
+DECLARATION: WORD '=' LIST {
+    //cppPrint("\tDECLARATION -> WORD = LIST \\n");
+    // associate the list with the word
+    $$ = makeVariable($1, $3);
+}
 RULE: TARGET LIST {
     //cppPrint("\tRULE -> TARGET LIST");
     // create a Rule object and add the TARGET and LIST lists to it
@@ -60,15 +73,25 @@ TARGET: LIST ':' {
     // no action?
     $$ = $1;
 }
-LIST: WORD {
-    //cppPrint("\tLIST -> WORD");
+LIST: PHRASE {
+    //cppPrint("\tLIST -> PHRASE");
     // add WORD to a new list? (a list<string>)
     $$ = makeList($1);
 }
-LIST: LIST WORD {
-    //cppPrint("\tLIST -> LIST WORD");
+LIST: LIST PHRASE {
+    //cppPrint("\tLIST -> LIST PHRASE");
     // add WORD to LIST (a list<string>)
     $$ = addToList($1, $2);
+}
+PHRASE: WORD {
+    //cppPrint("\tPHRASE -> WORD");
+    // store word in phrase
+    $$ = $1;
+}
+PHRASE: VARIABLE {
+    //cppPrint("\tPHRASE -> VARIABLE");
+    // store variable text in phrase
+    $$ = $1;
 }
 COMMANDS: COMMAND '\n' {
     //cppPrint("\tCOMMANDS -> COMMAND \\n");
@@ -80,6 +103,5 @@ COMMANDS: COMMANDS COMMAND '\n' {
     // add COMMAND to COMMANDS list<string>
     $$ = addToList($1, $2);
 }
-
 
 %%
